@@ -19,3 +19,50 @@ for (var i = 0; i < 5; i++){
     c.fill();
 
 }
+
+
+
+        if (this.xm > innerWidth/2-125){
+            this.dxm = -this.dxm;
+            this.t += 1;
+        }
+        if ((this.xm - 6 <= circleArray[0].x - 30 -innerWidth/2+125) && (this.t == 1 )){
+            this.dxm = 0;
+            if (this.ym < circleArray[0].y - 148){
+                this.ym += 3*this.dym;
+            } else{
+                this.t +=1;
+            }
+        }
+        if (this.t == 2){
+            if (this.ym > 0){
+                this.ym -= 3*this.dym;
+                circleArray[0].y -= 3*this.dym;
+                circleArray[1].y -= 3*this.dym;
+            } else {
+                this.t +=1;
+            }
+        }
+        if(this.t ==3){
+            if (circleArray[0].g > circleArray[1].g){
+                circleArray[0].x += 200;
+                circleArray[1].x -=200;
+                this.t = 4;
+            } else{
+                this.t =4;
+            }
+        }
+        if(this.t == 4){
+            if (this.ym < circleArray[2].y - 148){
+                this.ym += 3*this.dym;
+                circleArray[0].y += 3*this.dym;
+                circleArray[1].y += 3*this.dym;
+            } else{
+                this.t+=1;
+            }
+        }
+        if(this.t ==5 ){
+            if(this.ym >0){
+                this.ym -= 3*this.dym;
+            }
+        }
