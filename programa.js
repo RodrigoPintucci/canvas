@@ -21,19 +21,53 @@ window.addEventListener('resize', function(){
     canvas.height = window.innerHeight;
 })
 
-function Machine(xm, ym, dxm, dym, t) {
+function Hand(xm, ym, dxm, dym, t, k) {
     this.xm = xm;
     this.dxm = dxm;
     this.ym = ym;
     this.dym = dym;
     this.t = t;
+    this.k = k;
+
+    this.draw = function(){
+
+        c.beginPath();
+        c.rect(this.xm + innerWidth/2+75, this.ym + 175, 50, 50)
+        c.fillStyle = "rgb(160,160,160)";
+        c.strokeStyle = "rgb(0,0,0)";
+        c.stroke();
+        c.fill();
+        
+        c.beginPath();
+        c.rect(this.xm + innerWidth/2-125, this.ym + 175, 50, 50)
+        c.fillStyle = "rgb(160,160,160)";
+        c.strokeStyle = "rgb(0,0,0)";
+        c.stroke();
+        c.fill();
+
+
+    }
+    this.update = function() {
+        this.draw();
+    }
+
+}
+
+function Machine(xm, ym, dxm, dym, t, k, h) {
+    this.xm = xm;
+    this.dxm = dxm;
+    this.ym = ym;
+    this.dym = dym;
+    this.t = t;
+    this.k = k;
+    this.h = h;
 
     this.draw = function(){
 
 
 
         c.beginPath();
-        c.rect(this.xm + innerWidth/2-25, this.ym, 50, 105)
+        c.rect(this.xm + innerWidth/2-25 , this.ym+ 200-this.h, 50, this.h)
         c.fillStyle = "rgb(140,140,140)";
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
@@ -54,19 +88,7 @@ function Machine(xm, ym, dxm, dym, t) {
         c.fill();
         
         
-        c.beginPath();
-        c.rect(this.xm + innerWidth/2+75, this.ym + 175, 50, 50)
-        c.fillStyle = "rgb(160,160,160)";
-        c.strokeStyle = "rgb(0,0,0)";
-        c.stroke();
-        c.fill();
-        
-        c.beginPath();
-        c.rect(this.xm + innerWidth/2-125, this.ym + 175, 50, 50)
-        c.fillStyle = "rgb(160,160,160)";
-        c.strokeStyle = "rgb(0,0,0)";
-        c.stroke();
-        c.fill();
+
 
         c.beginPath();
         c.rect(0, innerHeight - 120, innerWidth, innerHeight)
@@ -76,14 +98,20 @@ function Machine(xm, ym, dxm, dym, t) {
         c.fill();
     }
     this.update = function() {
-        if (this.xm > innerWidth/2-125){
-            this.dxm = -this.dxm;
-            this.t += 1;
+        if(this.t == 0) {
+            this.xm += this.dxm
+            handArray[0].xm += this.dxm
+            if (this.xm > innerWidth/2-125) {
+                this.dxm = -this.dxm;
+                this.t += 1;
+            }
         }
-        if ((this.xm - 6 <= circleArray[0].x - 30 -innerWidth/2+125) && (this.t == 1 )){
+        if ((this.xm - 6 <= circleArray[this.k].x - 30 -innerWidth/2+125) && (this.t == 1 )){
             this.dxm = 0;
-            if (this.ym < circleArray[0].y - 148){
+            if (this.ym < circleArray[this.k].y - 148){
                 this.ym += 3*this.dym;
+                handArray[0].ym += 3*this.dym
+                this.h += 3*this.dym;
             } else{
                 this.t +=1;
             }
@@ -91,39 +119,75 @@ function Machine(xm, ym, dxm, dym, t) {
         if (this.t == 2){
             if (this.ym > 0){
                 this.ym -= 3*this.dym;
-                circleArray[0].y -= 3*this.dym;
-                circleArray[1].y -= 3*this.dym;
+                this.h -= 3*this.dym;
+                handArray[0].ym -= 3*this.dym
+                circleArray[this.k].y -= 3*this.dym;
+                circleArray[this.k+1].y -= 3*this.dym;
             } else {
                 this.t +=1;
             }
         }
         if(this.t ==3){
-            if (circleArray[0].g > circleArray[1].g){
-                circleArray[0].x += 200;
-                circleArray[1].x -=200;
+            if (circleArray[this.k].g > circleArray[this.k+1].g){                
+                circleArray[this.k].x += 200;
+                circleArray[this.k+1].x -=200;
                 this.t = 4;
             } else{
                 this.t =4;
             }
         }
         if(this.t == 4){
-            if (this.ym < circleArray[2].y - 148){
+            if (this.ym < innerHeight-348){
                 this.ym += 3*this.dym;
-                circleArray[0].y += 3*this.dym;
-                circleArray[1].y += 3*this.dym;
+                this.h += 3*this.dym;
+                handArray[0].ym += 3*this.dym
+                circleArray[this.k].y += 3*this.dym;
+                circleArray[this.k+1].y += 3*this.dym;
             } else{
                 this.t+=1;
             }
         }
         if(this.t ==5 ){
+            if (circleArray[this.k].g > circleArray[this.k+1].g){
+                [circleArray[this.k], circleArray[this.k+1]] = [circleArray[this.k+1], circleArray[this.k]]
+            }
             if(this.ym >0){
                 this.ym -= 3*this.dym;
+                this.h -= 3*this.dym;
+                handArray[0].ym -= 3*this.dym
+            } else{
+                this.k +=1;
+                this.dxm = dxm;
+                this.xm += this.dxm
+                handArray[0].xm += this.dxm
+                if (this.k == 4){
+                    if ((circleArray[0].g < circleArray[1].g)&&(circleArray[1].g < circleArray[2].g)&&(circleArray[2].g < circleArray[3].g)&&(circleArray[3].g < circleArray[4].g)){
+                        this.dxm = 0;
+                        this.dym = 0;
+                        this.k=0;
+                        this.t=7;
+                        console.log('parabens')
+                    } else{
+                        this.k = 0;
+                        this.t = 0;
+                    }
+                }
+                this.t = 0;
             }
+            
         }
+        if (this.t == 7){
+            this.k=0;
+            this.dxm = 0;
+            this.dym = 0;
+        }
+        console.log(this.t, this.k)
         this.xm+=4*this.dxm;
-        console.log(this.xm, circleArray[0].x - 33.5 -innerWidth/2+125, this.ym, this.t)
+        handArray[0].xm += 4*this.dxm
+        
         this.draw();
     }
+
 }
 
 
@@ -176,6 +240,7 @@ function Circle(x, y, dx, dy, radius, r, g, b, a, maxRadius, minRadius, id) {
 
 var circleArray = [];
 var machineArray = [];
+var handArray = [];
 
 
 function init(){
@@ -201,7 +266,11 @@ function init(){
     var ym = 0;
     var dym = 1;
     var t = 0;
-    machineArray.push(new Machine(xm, ym, dxm, dym, t));
+    var k = 0;
+    var h = innerHeight - 300;
+    machineArray.push(new Machine(xm, ym, dxm, dym, t, k, h));
+    handArray = [];
+    handArray.push(new Hand(xm, ym, dxm, dym, t, k));
 }
 
 function animate() {
@@ -210,9 +279,13 @@ function animate() {
     for (var i = 0; i < machineArray.length; i++){
         machineArray[i].update();
     }
+    for (var i = 0; i < handArray.length; i++){
+        handArray[i].update();
+    }
     for (var i = 0; i < circleArray.length; i++){
         circleArray[i].update();
     }
+    
     
 }
 init();

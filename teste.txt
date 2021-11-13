@@ -66,3 +66,21 @@ for (var i = 0; i < 5; i++){
                 this.ym -= 3*this.dym;
             }
         }
+
+
+        c.beginPath();
+        c.rect(this.xm + innerWidth/2+75, this.ym + 175, 50, 50)
+        c.fillStyle = "rgb(160,160,160)";
+        c.strokeStyle = "rgb(0,0,0)";
+        c.stroke();
+        c.fill();
+        
+        c.beginPath();
+        c.rect(this.xm + innerWidth/2-125, this.ym + 175, 50, 50)
+        c.fillStyle = "rgb(160,160,160)";
+        c.strokeStyle = "rgb(0,0,0)";
+        c.stroke();
+        c.fill();
+
+
+
