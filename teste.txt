@@ -89,3 +89,12 @@ for (var i = 0; i < 5; i++){
                     this.t += 1;
 
 
+
+
+        c.beginPath();
+        c.rect(this.xh, this.yh + 175, 50, 50)
+        c.fillStyle = "#A6808C";
+        c.strokeStyle = "rgb(0,0,0)";
+        c.stroke();
+        c.fill();
+
