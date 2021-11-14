@@ -34,14 +34,14 @@ function Hand(xm, ym, dxm, dym, t, k) {
 
         c.beginPath();
         c.rect(this.xm +175, this.ym + 175, 50, 50)
-        c.fillStyle = "rgb(160,160,160)";
+        c.fillStyle = "#A6808C";
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
         c.fill();
         
         c.beginPath();
         c.rect(this.xm -25, this.ym + 175, 50, 50)
-        c.fillStyle = "rgb(160,160,160)";
+        c.fillStyle = "#A6808C";
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
         c.fill();
@@ -70,21 +70,21 @@ function Machine(xm, ym, dxm, dym, t, k, h, chao) {
 
         c.beginPath();
         c.rect(this.xm + 75, this.ym+ 200-this.h, 50, this.h)
-        c.fillStyle = "rgb(140,140,140)";
+        c.fillStyle = "#A6808C";
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
         c.fill();
         
         c.beginPath();
         c.arc(this.xm +100, this.ym + 200, 100, 0, Math.PI*2, true)
-        c.fillStyle = "rgb(170,170,170)";
+        c.fillStyle = "#706677";
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
         c.fill();
         
         c.beginPath();
         c.arc(this.xm + 100, this.ym +200,  75, 0, Math.PI*2, true)
-        c.fillStyle = "rgb(150,150,150)";
+        c.fillStyle = "#565264";
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
         c.fill();
@@ -94,7 +94,7 @@ function Machine(xm, ym, dxm, dym, t, k, h, chao) {
 
         c.beginPath();
         c.rect(0, this.chao, innerWidth, innerHeight)
-        c.fillStyle = "rgb(170,170,170)";
+        c.fillStyle = "#706677";
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
         c.fill();
@@ -233,7 +233,7 @@ function Circle(x, y, dx, dy, radius, r, g, b, a, maxRadius, minRadius, id) {
     this.draw = function() {
         c.beginPath();
         c.rect(this.x-25, this.y+30, 50, 50)
-        c.fillStyle = "rgb(170,170,170)";
+        c.fillStyle = "#CCB7AE";
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
         c.fill();
@@ -286,7 +286,7 @@ function init(){
         var dy = (Math.random() - 0.5)*10;
         var r = 255;
         var g = 255 * Math.random(); 
-        var b = 0;
+        var b = 96;
         var a = 0.8; 
         var maxRadius = 3*radius + Math.random() * radius;
         var minRadius = 1* radius;
