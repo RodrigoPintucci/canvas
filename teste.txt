@@ -84,3 +84,8 @@ for (var i = 0; i < 5; i++){
 
 
 
+                if (this.xm > (innerWidth/2-125)- (3 - this.k)*(300-5*this.k)) {
+                    this.dxm = -this.dxm;
+                    this.t += 1;
+
+

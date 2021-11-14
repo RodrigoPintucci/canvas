@@ -19,6 +19,7 @@ window.addEventListener('mousemove', function(event){
 window.addEventListener('resize', function(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    
 })
 
 function Hand(xm, ym, dxm, dym, t, k) {
@@ -32,14 +33,14 @@ function Hand(xm, ym, dxm, dym, t, k) {
     this.draw = function(){
 
         c.beginPath();
-        c.rect(this.xm + innerWidth/2+75, this.ym + 175, 50, 50)
+        c.rect(this.xm +175, this.ym + 175, 50, 50)
         c.fillStyle = "rgb(160,160,160)";
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
         c.fill();
         
         c.beginPath();
-        c.rect(this.xm + innerWidth/2-125, this.ym + 175, 50, 50)
+        c.rect(this.xm -25, this.ym + 175, 50, 50)
         c.fillStyle = "rgb(160,160,160)";
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
@@ -48,12 +49,13 @@ function Hand(xm, ym, dxm, dym, t, k) {
 
     }
     this.update = function() {
+    
         this.draw();
     }
 
 }
 
-function Machine(xm, ym, dxm, dym, t, k, h) {
+function Machine(xm, ym, dxm, dym, t, k, h, chao) {
     this.xm = xm;
     this.dxm = dxm;
     this.ym = ym;
@@ -61,27 +63,27 @@ function Machine(xm, ym, dxm, dym, t, k, h) {
     this.t = t;
     this.k = k;
     this.h = h;
-
+    this.chao = chao;
     this.draw = function(){
 
 
 
         c.beginPath();
-        c.rect(this.xm + innerWidth/2-25 , this.ym+ 200-this.h, 50, this.h)
+        c.rect(this.xm + 75, this.ym+ 200-this.h, 50, this.h)
         c.fillStyle = "rgb(140,140,140)";
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
         c.fill();
         
         c.beginPath();
-        c.arc(this.xm + innerWidth/2, this.ym + 200, 100, 0, Math.PI*2, true)
+        c.arc(this.xm +100, this.ym + 200, 100, 0, Math.PI*2, true)
         c.fillStyle = "rgb(170,170,170)";
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
         c.fill();
         
         c.beginPath();
-        c.arc(this.xm + innerWidth/2, this.ym +200,  75, 0, Math.PI*2, true)
+        c.arc(this.xm + 100, this.ym +200,  75, 0, Math.PI*2, true)
         c.fillStyle = "rgb(150,150,150)";
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
@@ -91,7 +93,7 @@ function Machine(xm, ym, dxm, dym, t, k, h) {
 
 
         c.beginPath();
-        c.rect(0, innerHeight - 120, innerWidth, innerHeight)
+        c.rect(0, this.chao, innerWidth, innerHeight)
         c.fillStyle = "rgb(170,170,170)";
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
@@ -100,20 +102,29 @@ function Machine(xm, ym, dxm, dym, t, k, h) {
     this.update = function() {
         if(this.t == 0) {
             this.xm += this.dxm
-            handArray[0].xm += this.dxm
-            if (this.xm > innerWidth/2-125) {
-                this.dxm = -this.dxm;
-                this.t += 1;
-            }
-        }
-        if ((this.xm - 6 <= circleArray[this.k].x - 30 -innerWidth/2+125) && (this.t == 1 )){
-            this.dxm = 0;
-            if (this.ym < circleArray[this.k].y - 148){
-                this.ym += 3*this.dym;
-                handArray[0].ym += 3*this.dym
-                this.h += 3*this.dym;
+            handArray[0].xm += this.dxm  
+            console.log((this.xm > circleArray[this.k].x), (this.xm > 0)) 
+            if ((this.xm > circleArray[this.k].x)&&(this.xm > 0)){
+                this.xm += -10*this.dxm
+                handArray[0].xm += -10*this.dxm
             } else{
                 this.t +=1;
+            }
+
+
+
+
+        }
+        if (this.t == 1 ){
+            if (this.xm - 3 >= circleArray[this.k].x){
+                this.dxm = 0;
+                if (this.ym < circleArray[this.k].y - 148){
+                    this.ym += 3*this.dym;
+                    handArray[0].ym += 3*this.dym
+                    this.h += 3*this.dym;
+                } else{
+                    this.t +=1;
+                }
             }
         }
         if (this.t == 2){
@@ -137,14 +148,27 @@ function Machine(xm, ym, dxm, dym, t, k, h) {
             }
         }
         if(this.t == 4){
-            if (this.ym < innerHeight-348){
-                this.ym += 3*this.dym;
-                this.h += 3*this.dym;
-                handArray[0].ym += 3*this.dym
-                circleArray[this.k].y += 3*this.dym;
-                circleArray[this.k+1].y += 3*this.dym;
-            } else{
-                this.t+=1;
+            if(this.k == 0){
+                if (this.ym < circleArray[this.k+2].y -148){
+                    this.ym += 3*this.dym;
+                    this.h += 3*this.dym;
+                    handArray[0].ym += 3*this.dym
+                    circleArray[this.k].y += 3*this.dym;
+                    circleArray[this.k+1].y += 3*this.dym;
+                } else{
+                    this.t+=1;
+                }
+            }
+            else if (this.k <= 3){
+                if (this.ym < circleArray[this.k-1].y - 148){
+                    this.ym += 3*this.dym;
+                    this.h += 3*this.dym;
+                    handArray[0].ym += 3*this.dym
+                    circleArray[this.k].y += 3*this.dym;
+                    circleArray[this.k+1].y += 3*this.dym;
+                } else{
+                    this.t+=1;
+                }
             }
         }
         if(this.t ==5 ){
@@ -164,15 +188,16 @@ function Machine(xm, ym, dxm, dym, t, k, h) {
                     if ((circleArray[0].g < circleArray[1].g)&&(circleArray[1].g < circleArray[2].g)&&(circleArray[2].g < circleArray[3].g)&&(circleArray[3].g < circleArray[4].g)){
                         this.dxm = 0;
                         this.dym = 0;
-                        this.k=0;
                         this.t=7;
                         console.log('parabens')
+                        this.k=0;
                     } else{
                         this.k = 0;
                         this.t = 0;
                     }
+                } else{
+                    this.t = 0;
                 }
-                this.t = 0;
             }
             
         }
@@ -215,7 +240,7 @@ function Circle(x, y, dx, dy, radius, r, g, b, a, maxRadius, minRadius, id) {
         c.beginPath();
         c.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
         c.strokeStyle = "rgb(0,0,0)";
-        c.fillStyle = "rgb(" + this.r + "," + this.g + "," + this.b + "," + this.a +")";
+        c.fillStyle = "rgba(" + this.r + "," + this.g + "," + this.b + "," + this.a +")";
         c.stroke();
         c.fill();
         c.beginPath();
@@ -225,11 +250,18 @@ function Circle(x, y, dx, dy, radius, r, g, b, a, maxRadius, minRadius, id) {
         c.lineTo(this.x+5, this.y+50);
         c.strokeStyle = "rgb(0,0,0)";
         c.stroke();
+        c.beginPath();
+        c.arc(this.x-20, this.y-20, 10, Math.PI*11/8, Math.PI*8/8, true);
+        c.strokeStyle = "rgba(255,255,255,"+(5*this.a - 4)+")";
+        c.stroke();
         
     }
     
     this.update = function() {
     
+        if (machineArray[0].t ==7){
+            this.a = 1;
+        }
         this.draw();
     }
 
@@ -248,14 +280,14 @@ function init(){
     for(var i = 0; i < 5; i++){
         var id = i + 1;
         var radius = 50;
-        var x = + 150 + 200*i;
+        var x = innerWidth/5+ 200*i;
         var y = innerHeight - 200;
         var dx = (Math.random() - 0.5)*10;
         var dy = (Math.random() - 0.5)*10;
         var r = 255;
         var g = 255 * Math.random(); 
         var b = 0;
-        var a = 1; 
+        var a = 0.8; 
         var maxRadius = 3*radius + Math.random() * radius;
         var minRadius = 1* radius;
         circleArray.push(new Circle(x, y, dx, dy, radius, r, g, b, a, maxRadius, minRadius, id));
@@ -268,10 +300,12 @@ function init(){
     var t = 0;
     var k = 0;
     var h = innerHeight - 300;
-    machineArray.push(new Machine(xm, ym, dxm, dym, t, k, h));
+    var chao = innerHeight - 120;
+    machineArray.push(new Machine(xm, ym, dxm, dym, t, k, h, chao));
     handArray = [];
     handArray.push(new Hand(xm, ym, dxm, dym, t, k));
 }
+
 
 function animate() {
     requestAnimationFrame(animate);
@@ -286,7 +320,11 @@ function animate() {
         circleArray[i].update();
     }
     
-    
+
+
+
+
+
 }
 init();
 animate();
